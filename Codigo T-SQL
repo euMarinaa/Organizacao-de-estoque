@@ -1,0 +1,31 @@
+CREATE TABLE Produtos ( 
+    id INT IDENTITY(1,1) PRIMARY KEY, 
+    nome NVARCHAR(100) NOT NULL, 
+    categoria NVARCHAR(50) NOT NULL, 
+    preco DECIMAL(10,2) NOT NULL, 
+    estoque INT NOT NULL 
+); 
+ 
+CREATE TABLE Vendas ( 
+    id INT IDENTITY(1,1) PRIMARY KEY, 
+    id_produto INT NOT NULL, 
+    quantidade INT NOT NULL, 
+    data_venda DATE DEFAULT GETDATE(), 
+    FOREIGN KEY (id_produto) REFERENCES Produtos(id) 
+); 
+
+
+INSERT INTO Produtos (nome, categoria, preco, estoque) VALUES   
+('Arroz 5kg', 'Alimentos', 25.90, 50),   
+('Feijão 1kg', 'Alimentos', 8.99, 40),   
+('Leite Integral 1L', 'Bebidas', 5.49, 30),   
+('Refrigerante 2L', 'Bebidas', 7.99, 25),   
+('Detergente 500ml', 'Limpeza', 2.50, 60);   
+ 
+INSERT INTO Vendas (id_produto, quantidade, data_venda) VALUES   
+(1, 5, '2025-03-01'),   
+(2, 3, '2025-03-02'),   
+(3, 10, '2025-03-03'),   
+(4, 8, '2025-03-04'),   
+(5, 12, '2025-03-05');   
+
