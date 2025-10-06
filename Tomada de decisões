@@ -1,0 +1,56 @@
+**Lista das mercadoria mais vendidos**
+SELECT p.nome, SUM(v.quantidade) AS total_vendido 
+FROM Vendas v 
+JOIN Produtos p ON v.id_produto = p.id 
+GROUP BY p.nome 
+ORDER BY total_vendido DESC; 
+
+(Identificar quais mercadorias tiveram maior volume de vendas,
+ajudando a entender o desempenho de cada item)
+
+
+**Calcular a receita total das vendas**
+SELECT SUM(p.preco * v.quantidade) AS receita_total 
+FROM Vendas v 
+JOIN Produtos p ON v.id_produto = p.id; 
+
+(Obter um único número que representa quanto dinheiro foi gerado
+pelas vendas registradas no sistema)
+
+
+**Indentificar produtos com baixo estoque**
+SELECT nome, estoque 
+FROM Produtos 
+WHERE estoque < 10 
+ORDER BY estoque ASC; 
+
+(Listar os produtos cujo estoque está abaixo de um limite crítico (neste caso, 10 unidades),
+para que possam ser reabastecidos ou monitorados)
+
+
+**Atualização de estoque automaticamente após cada venda**
+CREATE TRIGGER AtualizarEstoque 
+ON Vendas 
+AFTER INSERT 
+AS 
+BEGIN 
+    UPDATE Produtos 
+    SET estoque = estoque - i.quantidade 
+    FROM Produtos p 
+    INNER JOIN inserted i ON p.id = i.id_produto; 
+END
+
+(O que faz? Toda vez que uma venda é registrada, o estoque do produto
+correspondente é reduzido automaticamente) 
+
+
+**Relatório de vendas por categoria de produto **
+SELECT p.categoria, SUM(p.preco * v.quantidade) AS total_vendas 
+FROM Vendas v 
+JOIN Produtos p ON v.id_produto = p.id 
+GROUP BY p.categoria 
+ORDER BY total_vendas DESC; 
+
+(Exibir quanto foi vendido em cada categoria de produto, ordenando da categoria
+com maior faturamento para a menor)
+ 
